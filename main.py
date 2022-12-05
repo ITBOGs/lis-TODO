@@ -17,7 +17,12 @@ class lis_todo(QMainWindow):
 		sql_query.db_disconnect()
 
 	def showEvent(self, a0: QtGui.QShowEvent) -> None:
-		sql_query.db_connect()
+		for i in range(5):
+			if sql_query.db_connect():
+				return
+		sys.exit(40197)  # Примерно
+
+
 
 
 if __name__ == '__main__':

@@ -11,7 +11,7 @@ class SqlQuery:
 		self.password = '2210'
 		self.db_name = 'lis_todo'
 
-	def db_connect(self):
+	def db_connect(self) -> bool:
 		try:
 			self.connection = psycopg2.connect(
 				host=self.host,
@@ -20,9 +20,11 @@ class SqlQuery:
 				database=self.db_name
 			)
 			print('[INFO] Successful database connection')
+			return True
 
 		except Exception as _ex:
 			print('[INFO] Error while working with postgres (connection)', _ex)
+			return False
 
 	def db_disconnect(self):
 		try:
