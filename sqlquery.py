@@ -19,6 +19,8 @@ class SqlQuery:
 					database=self.db_name
 				)
 				print('[INFO] Successful database connection')
+
+				self.connection.autocommit = True
 				return True
 
 			except Exception as _ex:
@@ -47,3 +49,22 @@ class SqlQuery:
 				'''
 			)
 			return cursor.fetchone()[0]
+
+	def create_table(self) -> None:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				'''
+				CREATE TABLE IF NOT EXISTS category(
+					category_id INT NOT NULL PRIMARY KEY,
+					name VARCHAR(255) NOT NULL
+				);
+				
+				CREATE TABLE IF NOT EXISTS task(
+					task_id INT NOT NULL PRIMARY KEY,
+					name VARCHAR(255) NOT NULL,
+					description VARCHAR(255) NOT NULL,
+					active BOOLEAN NOT NULL,
+					category_id INT NOT NULL REFERENCES category (category_id)
+				);
+				'''
+			)
