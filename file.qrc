@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/outline_task_black_48dp.png</file>
     <file>icons/add.png</file>
+    <file>icons/refresh.png</file>
   </qresource>
 </RCC>

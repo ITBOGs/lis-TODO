@@ -36,35 +36,50 @@ class SqlQuery:
 		except Exception as _ex:
 			print('[INFO] Error while working with postgres (disconnection)', _ex)
 
-	def table_exists(self, table_name: str):
-		with self.connection.cursor() as cursor:
-			cursor.execute(
-				f'''
-				SELECT EXISTS(
-				    SELECT * 
-			        FROM information_schema.tables 
-			        WHERE 
-                        table_name = '{table_name}'
-				);
-				'''
-			)
-			return cursor.fetchone()[0]
-
 	def create_table(self) -> None:
 		with self.connection.cursor() as cursor:
 			cursor.execute(
 				'''
 				CREATE TABLE IF NOT EXISTS category(
-					category_id INT NOT NULL PRIMARY KEY,
-					name VARCHAR(255) NOT NULL
+					category_name VARCHAR(255) NOT NULL PRIMARY KEY
 				);
 				
 				CREATE TABLE IF NOT EXISTS task(
-					task_id INT NOT NULL PRIMARY KEY,
-					name VARCHAR(255) NOT NULL,
+					task_id SERIAL NOT NULL PRIMARY KEY,
+					task_name VARCHAR(255) NOT NULL,
 					description VARCHAR(255) NOT NULL,
 					active BOOLEAN NOT NULL,
-					category_id INT NOT NULL REFERENCES category (category_id)
+					category_name VARCHAR(255) NOT NULL REFERENCES category (category_name)
 				);
 				'''
+			)
+
+	def get_category(self) -> tuple:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				'''
+				SELECT category_name FROM category
+				'''
+			)
+
+			return cursor.fetchall()
+
+	def get_task(self, category_name: str) -> tuple:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				SELECT task_name FROM task
+				WHERE category_name = '{category_name}'
+				"""
+			)
+
+			return cursor.fetchall()
+
+	def insert_category(self, category_name: str) -> None:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				INSERT INTO category (category_name)
+				VALUES ('{category_name}')
+				"""
 			)
