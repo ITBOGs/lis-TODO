@@ -18,11 +18,18 @@ class LisTodo(QMainWindow):
 		if flag_db:
 			sql_query.create_table()
 			self.refresh_category_list()
+			self.refresh_task_list()
 
 			self.ui.btn_refresh_category_list.clicked.connect(lambda: self.refresh_category_list())
 			self.ui.btn_refresh_task_list.clicked.connect(lambda: self.refresh_task_list())
 			self.ui.btn_add_category.clicked.connect(lambda: self.create_category())
 			self.ui.btn_add_task.clicked.connect(lambda: self.create_task_menu())
+
+			self.ui.lis_wid_category.itemDoubleClicked.connect(lambda: self.refresh_task_list())
+			self.ui.lis_wid_task.itemDoubleClicked.connect(lambda: self.view_task())
+
+			self.ui.led_name_task.setDisabled(True)
+			self.ui.ted_description_task.setDisabled(True)
 		else:
 			self.setWindowTitle('Нет подключения к БД')
 			self.mes_box('Нет подключения к БД')
@@ -49,21 +56,30 @@ class LisTodo(QMainWindow):
 			category_name = self.ui.lis_wid_category.currentItem().text()
 			lis_task = sql_query.get_task(category_name)
 
-			for task_name in lis_task:
-				self.ui.lis_wid_task.addItem(*task_name)
+			first_item = None
+
+			for lis_name in lis_task:
+				if not first_item:
+					first_item = QListWidgetItem(*lis_name)
+					self.ui.lis_wid_task.addItem(first_item)
+				else:
+					self.ui.lis_wid_task.addItem(*lis_name)
+
+			self.ui.lis_wid_task.setCurrentItem(first_item)
 		else:
 			self.mes_box('Не выбрана категория')
 
-	def create_category(self):
+	def create_category(self) -> None:
 		dlg_create_table = DlgCreateCategory()
 		dlg_create_table.exec()
 
 		self.refresh_category_list()
 
-	def create_task_menu(self):
+	def create_task_menu(self) -> None:
 		self.ui.ted_description_task.clear()
 		self.ui.led_name_task.clear()
 
+		self.ui.lis_wid_task.setCurrentItem(None)
 		self.ui.lis_wid_task.setDisabled(True)
 
 		self.ui.btn_edit_task.setText('Создать задачу')
@@ -80,7 +96,7 @@ class LisTodo(QMainWindow):
 
 		if category_name and task_name and description:
 			sql_query.insert_task(task_name, description, category_name)
-
+			self.cancel_create_task()
 		else:
 			if not category_name:
 				self.mes_box('Не выбрана категория')
@@ -94,6 +110,7 @@ class LisTodo(QMainWindow):
 		self.ui.led_name_task.clear()
 
 		self.ui.lis_wid_task.setDisabled(False)
+		self.refresh_task_list()
 
 		self.ui.btn_edit_task.setText('Изменить задачу')
 		self.ui.btn_del_task.setText('Удалить задачу')
@@ -103,6 +120,17 @@ class LisTodo(QMainWindow):
 		self.ui.btn_del_task.disconnect()
 		# self.ui.btn_edit_task.clicked.connect(lambda: self.create_task())
 		# self.ui.btn_del_task.clicked.connect(lambda: self.cancel_create_task())
+
+	def view_task(self) -> None:
+		category_name = self.ui.lis_wid_category.currentItem().text()
+		task_name = self.ui.lis_wid_task.currentItem().text()
+
+		if category_name and task_name:
+			task_data = list(sql_query.get_task_details(category_name, task_name)[0])
+
+			self.ui.led_name_task.setText(task_data[0])
+			self.ui.ted_description_task.setText((task_data[1]))
+
 
 
 	@staticmethod

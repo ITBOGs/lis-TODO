@@ -75,6 +75,20 @@ class SqlQuery:
 
 			return cursor.fetchall()
 
+	def get_task_details(self, category_name: str, task_name: str) -> tuple:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				SELECT task_name, description, complete FROM task
+				WHERE 
+					category_name = '{category_name}'
+					AND task_name = '{task_name}'
+					
+				"""
+			)
+
+			return cursor.fetchall()
+
 	def insert_category(self, category_name: str) -> None:
 		with self.connection.cursor() as cursor:
 			cursor.execute(
