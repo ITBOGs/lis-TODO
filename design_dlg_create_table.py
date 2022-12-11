@@ -16,6 +16,33 @@ class Ui_dlg_create_category(object):
         dlg_create_category.setObjectName("dlg_create_category")
         dlg_create_category.resize(337, 69)
         dlg_create_category.setMaximumSize(QtCore.QSize(577, 69))
+        dlg_create_category.setStyleSheet("QWidget{\n"
+"    color: white;\n"
+"    background: qlineargradient( x1:0.5 y1:0, x2:0.5 y1:1, stop:0 #db8504, stop:1 black);\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"QLabel{\n"
+"    background: transparent;\n"
+"    border: None;\n"
+"}\n"
+"\n"
+"QListWidget{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QLineEdit{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"")
         self.verticalLayout = QtWidgets.QVBoxLayout(dlg_create_category)
         self.verticalLayout.setObjectName("verticalLayout")
         self.led_category_name = QtWidgets.QLineEdit(dlg_create_category)

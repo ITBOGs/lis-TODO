@@ -48,7 +48,7 @@ class SqlQuery:
 					task_id SERIAL NOT NULL PRIMARY KEY,
 					task_name VARCHAR(255) NOT NULL,
 					description VARCHAR(255) NOT NULL,
-					active BOOLEAN NOT NULL,
+					complete BOOLEAN NOT NULL DEFAULT FALSE,
 					category_name VARCHAR(255) NOT NULL REFERENCES category (category_name)
 				);
 				'''
@@ -81,5 +81,14 @@ class SqlQuery:
 				f"""
 				INSERT INTO category (category_name)
 				VALUES ('{category_name}')
+				"""
+			)
+
+	def insert_task(self, task_name: str, description: str, category_name: str) -> None:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				INSERT INTO task (task_name, description, category_name)
+				VALUES ('{task_name}', '{description}','{category_name}');
 				"""
 			)

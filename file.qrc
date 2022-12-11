@@ -1,6 +1,6 @@
 <RCC>
   <qresource prefix="mian_res">
-    <file>resource/icons/sync.png</file>
+    <file>resource/icons/refresh.png</file>
     <file>resource/icons/list.png</file>
     <file>resource/icons/tab.png</file>
   </qresource>

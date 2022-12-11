@@ -38,6 +38,7 @@
 
 QLabel{
 	background: transparent;
+	border: None;
 }
 
 QListWidget{
@@ -98,7 +99,7 @@ QPushButton{
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/mian_res/resource/icons/sync.png</normaloff>:/mian_res/resource/icons/sync.png</iconset>
+            <normaloff>:/mian_res/resource/icons/refresh.png</normaloff>:/mian_res/resource/icons/refresh.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -202,7 +203,7 @@ QPushButton{
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/mian_res/resource/icons/sync.png</normaloff>:/mian_res/resource/icons/sync.png</iconset>
+            <normaloff>:/mian_res/resource/icons/refresh.png</normaloff>:/mian_res/resource/icons/refresh.png</iconset>
           </property>
           <property name="iconSize">
            <size>

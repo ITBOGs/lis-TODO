@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
 "\n"
 "QLabel{\n"
 "    background: transparent;\n"
+"    border: None;\n"
 "}\n"
 "\n"
 "QListWidget{\n"
@@ -74,7 +75,7 @@ class Ui_MainWindow(object):
         self.btn_refresh_category_list.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_refresh_category_list.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/sync.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_refresh_category_list.setIcon(icon1)
         self.btn_refresh_category_list.setIconSize(QtCore.QSize(16, 16))
         self.btn_refresh_category_list.setFlat(False)

@@ -19,6 +19,39 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="file.qrc">
+    <normaloff>:/mian_res/resource/icons/tab.png</normaloff>:/mian_res/resource/icons/tab.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+	color: white;
+	background: qlineargradient( x1:0.5 y1:0, x2:0.5 y1:1, stop:0 #db8504, stop:1 black);
+	font-weight: 600;
+}
+
+QLabel{
+	background: transparent;
+	border: None;
+}
+
+QListWidget{
+	color: black;
+	background: white;
+}
+
+QLineEdit{
+	color: black;
+	background: white;
+}
+
+QPushButton{
+	color: black;
+	background: white;
+}
+
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLineEdit" name="led_category_name"/>
@@ -56,6 +89,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="file.qrc"/>
+ </resources>
  <connections/>
 </ui>
