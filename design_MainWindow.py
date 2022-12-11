@@ -16,9 +16,39 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(882, 456)
         MainWindow.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        MainWindow.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/icons/outline_task_black_48dp.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/list.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
+        MainWindow.setStyleSheet("QWidget{\n"
+"    color: white;\n"
+"    background: qlineargradient( x1:0.5 y1:0, x2:0.5 y1:1, stop:0 #db8504, stop:1 black);\n"
+"    font-weight: 600;\n"
+"}\n"
+"\n"
+"QLabel{\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"QListWidget{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QLineEdit{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"    color: black;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -29,7 +59,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
@@ -43,8 +74,10 @@ class Ui_MainWindow(object):
         self.btn_refresh_category_list.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_refresh_category_list.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/sync.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_refresh_category_list.setIcon(icon1)
+        self.btn_refresh_category_list.setIconSize(QtCore.QSize(16, 16))
+        self.btn_refresh_category_list.setFlat(False)
         self.btn_refresh_category_list.setObjectName("btn_refresh_category_list")
         self.horizontalLayout_4.addWidget(self.btn_refresh_category_list)
         self.btn_add_category = QtWidgets.QPushButton(self.centralwidget)
@@ -57,8 +90,9 @@ class Ui_MainWindow(object):
         self.btn_add_category.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_add_category.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/tab.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_add_category.setIcon(icon2)
+        self.btn_add_category.setFlat(False)
         self.btn_add_category.setObjectName("btn_add_category")
         self.horizontalLayout_4.addWidget(self.btn_add_category)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
@@ -69,6 +103,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.lis_wid_category.sizePolicy().hasHeightForWidth())
         self.lis_wid_category.setSizePolicy(sizePolicy)
         self.lis_wid_category.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.lis_wid_category.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.lis_wid_category.setObjectName("lis_wid_category")
         self.verticalLayout.addWidget(self.lis_wid_category)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
@@ -78,7 +113,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_5.addWidget(self.label_2)
@@ -92,6 +128,8 @@ class Ui_MainWindow(object):
         self.btn_refresh_task_list.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_refresh_task_list.setText("")
         self.btn_refresh_task_list.setIcon(icon1)
+        self.btn_refresh_task_list.setIconSize(QtCore.QSize(16, 16))
+        self.btn_refresh_task_list.setFlat(False)
         self.btn_refresh_task_list.setObjectName("btn_refresh_task_list")
         self.horizontalLayout_5.addWidget(self.btn_refresh_task_list)
         self.btn_add_task = QtWidgets.QPushButton(self.centralwidget)
@@ -104,18 +142,22 @@ class Ui_MainWindow(object):
         self.btn_add_task.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_add_task.setText("")
         self.btn_add_task.setIcon(icon2)
+        self.btn_add_task.setFlat(False)
         self.btn_add_task.setObjectName("btn_add_task")
         self.horizontalLayout_5.addWidget(self.btn_add_task)
         self.verticalLayout_2.addLayout(self.horizontalLayout_5)
         self.lis_wid_task = QtWidgets.QListWidget(self.centralwidget)
         self.lis_wid_task.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.lis_wid_task.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.lis_wid_task.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.lis_wid_task.setObjectName("lis_wid_task")
         self.verticalLayout_2.addWidget(self.lis_wid_task)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setMinimumSize(QtCore.QSize(10, 0))
         font = QtGui.QFont()
-        font.setPointSize(8)
+        font.setBold(True)
+        font.setWeight(75)
         self.line.setFont(font)
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line.setLineWidth(2)
@@ -131,6 +173,8 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.horizontalLayout.addWidget(self.label_3)
         self.led_name_task = QtWidgets.QLineEdit(self.centralwidget)
+        self.led_name_task.setText("")
+        self.led_name_task.setFrame(False)
         self.led_name_task.setObjectName("led_name_task")
         self.horizontalLayout.addWidget(self.led_name_task)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
@@ -142,7 +186,14 @@ class Ui_MainWindow(object):
         self.ted_description_task = QtWidgets.QTextEdit(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.ted_description_task.setFont(font)
+        self.ted_description_task.setStyleSheet("font-size: 10pt;\n"
+"fornt-weight: 600;\n"
+"background: white;\n"
+"color: black;")
+        self.ted_description_task.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.ted_description_task.setObjectName("ted_description_task")
         self.verticalLayout_4.addWidget(self.ted_description_task)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
@@ -154,6 +205,9 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.btn_del_task, 0, 1, 1, 1)
         self.btn_complete_task = QtWidgets.QPushButton(self.centralwidget)
         self.btn_complete_task.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_complete_task.setAutoDefault(False)
+        self.btn_complete_task.setDefault(False)
+        self.btn_complete_task.setFlat(False)
         self.btn_complete_task.setObjectName("btn_complete_task")
         self.gridLayout.addWidget(self.btn_complete_task, 0, 2, 1, 1)
         self.btn_edit_task = QtWidgets.QPushButton(self.centralwidget)
@@ -173,13 +227,12 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Категории:"))
         self.label_2.setText(_translate("MainWindow", "Список задач:"))
         self.label_3.setText(_translate("MainWindow", "Название задачи:"))
-        self.led_name_task.setText(_translate("MainWindow", "Тестовая надпись, кторая покажет, как это будет выглядеть!!:)"))
         self.label_4.setText(_translate("MainWindow", "Описание задачи:"))
         self.ted_description_task.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Тестовая надпись, кторая покажет, как это будет выглядеть!!:)</p></body></html>"))
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.btn_del_task.setText(_translate("MainWindow", "Удалить задачу"))
         self.btn_complete_task.setText(_translate("MainWindow", "Выполнено"))
         self.btn_edit_task.setText(_translate("MainWindow", "Изменить задачу"))

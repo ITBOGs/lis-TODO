@@ -16,12 +16,46 @@
     <height>16777215</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
    <iconset resource="file.qrc">
-    <normaloff>:/icons/icons/outline_task_black_48dp.png</normaloff>:/icons/icons/outline_task_black_48dp.png</iconset>
+    <normaloff>:/mian_res/resource/icons/list.png</normaloff>:/mian_res/resource/icons/list.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+	color: white;
+	background: qlineargradient( x1:0.5 y1:0, x2:0.5 y1:1, stop:0 #db8504, stop:1 black);
+	font-weight: 600;
+}
+
+QLabel{
+	background: transparent;
+}
+
+QListWidget{
+	color: black;
+	background: white;
+}
+
+QLineEdit{
+	color: black;
+	background: white;
+}
+
+QPushButton{
+	color: black;
+	background: white;
+}
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -33,7 +67,8 @@
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
            </font>
           </property>
           <property name="text">
@@ -63,7 +98,16 @@
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/icons/icons/refresh.png</normaloff>:/icons/icons/refresh.png</iconset>
+            <normaloff>:/mian_res/resource/icons/sync.png</normaloff>:/mian_res/resource/icons/sync.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -89,7 +133,10 @@
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
+            <normaloff>:/mian_res/resource/icons/tab.png</normaloff>:/mian_res/resource/icons/tab.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -109,6 +156,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
        </widget>
       </item>
      </layout>
@@ -121,7 +171,8 @@
          <widget class="QLabel" name="label_2">
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
            </font>
           </property>
           <property name="text">
@@ -151,7 +202,16 @@
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/icons/icons/refresh.png</normaloff>:/icons/icons/refresh.png</iconset>
+            <normaloff>:/mian_res/resource/icons/sync.png</normaloff>:/mian_res/resource/icons/sync.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -177,7 +237,10 @@
           </property>
           <property name="icon">
            <iconset resource="file.qrc">
-            <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
+            <normaloff>:/mian_res/resource/icons/tab.png</normaloff>:/mian_res/resource/icons/tab.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -190,6 +253,12 @@
           <width>250</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
         </property>
        </widget>
       </item>
@@ -205,7 +274,8 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="frameShadow">
@@ -236,7 +306,10 @@
         <item>
          <widget class="QLineEdit" name="led_name_task">
           <property name="text">
-           <string>Тестовая надпись, кторая покажет, как это будет выглядеть!!:)</string>
+           <string/>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -256,14 +329,25 @@
           <property name="font">
            <font>
             <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size: 10pt;
+fornt-weight: 600;
+background: white;
+color: black;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
           <property name="html">
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Тестовая надпись, кторая покажет, как это будет выглядеть!!:)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -288,6 +372,15 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="text">
            <string>Выполнено</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
