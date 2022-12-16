@@ -106,3 +106,26 @@ class SqlQuery:
 				VALUES ('{task_name}', '{description}','{category_name}');
 				"""
 			)
+
+	def del_task(self, category_name: str, task_name: str):
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				DELETE FROM task
+				WHERE 
+					category_name = '{category_name}'
+					AND task_name = '{task_name}'
+				"""
+			)
+
+	def update_task(self, task_name_new: str, description: str, category_name: str, task_name_old: str) -> None:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				UPDATE task
+				SET task_name = '{task_name_new}', description = '{description}'
+				WHERE 
+					category_name = '{category_name}'
+					AND task_name = '{task_name_old}'
+				"""
+			)

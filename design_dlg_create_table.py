@@ -16,6 +16,9 @@ class Ui_dlg_create_category(object):
         dlg_create_category.setObjectName("dlg_create_category")
         dlg_create_category.resize(337, 69)
         dlg_create_category.setMaximumSize(QtCore.QSize(577, 69))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/mian_res/resource/icons/tab.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        dlg_create_category.setWindowIcon(icon)
         dlg_create_category.setStyleSheet("QWidget{\n"
 "    color: white;\n"
 "    background: qlineargradient( x1:0.5 y1:0, x2:0.5 y1:1, stop:0 #db8504, stop:1 black);\n"
@@ -68,6 +71,7 @@ class Ui_dlg_create_category(object):
         dlg_create_category.setWindowTitle(_translate("dlg_create_category", "Dialog"))
         self.btn_ok.setText(_translate("dlg_create_category", "Создать"))
         self.btn_cancel.setText(_translate("dlg_create_category", "Отмена"))
+import file_rc
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 import sys
+from typing import Union
 
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QListWidgetItem
@@ -24,12 +25,24 @@ class LisTodo(QMainWindow):
 			self.ui.btn_refresh_task_list.clicked.connect(lambda: self.refresh_task_list())
 			self.ui.btn_add_category.clicked.connect(lambda: self.create_category())
 			self.ui.btn_add_task.clicked.connect(lambda: self.create_task_menu())
+			self.ui.btn_del_task.clicked.connect(lambda: self.del_task())
+			self.ui.btn_save.clicked.connect(lambda: self.create_task())
+			self.ui.btn_cancel.clicked.connect(lambda: self.cancel_create_task())
+			self.ui.btn_edit_task.clicked.connect(lambda: self.edit_task_menu())
+			self.ui.btn_cancel_edit.clicked.connect(lambda: self.cancel_edit_task())
+			self.ui.btn_save_edit.clicked.connect(lambda: self.edit_task())
 
 			self.ui.lis_wid_category.itemDoubleClicked.connect(lambda: self.refresh_task_list())
 			self.ui.lis_wid_task.itemDoubleClicked.connect(lambda: self.view_task())
 
+			self.ui.btn_save.hide()
+			self.ui.btn_cancel.hide()
+			self.ui.btn_save_edit.hide()
+			self.ui.btn_cancel_edit.hide()
 			self.ui.led_name_task.setDisabled(True)
 			self.ui.ted_description_task.setDisabled(True)
+
+			self.resize(900, 350)
 		else:
 			self.setWindowTitle('Нет подключения к БД')
 			self.mes_box('Нет подключения к БД')
@@ -51,6 +64,8 @@ class LisTodo(QMainWindow):
 
 	def refresh_task_list(self) -> None:
 		self.ui.lis_wid_task.clear()
+		self.ui.led_name_task.clear()
+		self.ui.ted_description_task.clear()
 
 		if self.ui.lis_wid_category.count() != 0:
 			category_name = self.ui.lis_wid_category.currentItem().text()
@@ -79,15 +94,20 @@ class LisTodo(QMainWindow):
 		self.ui.ted_description_task.clear()
 		self.ui.led_name_task.clear()
 
+		self.ui.led_name_task.setDisabled(False)
+		self.ui.ted_description_task.setDisabled(False)
+
 		self.ui.lis_wid_task.setCurrentItem(None)
 		self.ui.lis_wid_task.setDisabled(True)
 
-		self.ui.btn_edit_task.setText('Создать задачу')
-		self.ui.btn_del_task.setText('Отмена')
-		self.ui.btn_complete_task.hide()
+		self.ui.btn_save.show()
+		self.ui.btn_cancel.show()
 
-		self.ui.btn_edit_task.clicked.connect(lambda: self.create_task())
-		self.ui.btn_del_task.clicked.connect(lambda: self.cancel_create_task())
+		self.ui.btn_del_task.hide()
+		self.ui.btn_complete_task.hide()
+		self.ui.btn_edit_task.hide()
+		self.ui.btn_add_task.hide()
+		self.ui.btn_refresh_task_list.hide()
 
 	def create_task(self) -> None:
 		category_name = self.ui.lis_wid_category.currentItem().text()
@@ -112,14 +132,82 @@ class LisTodo(QMainWindow):
 		self.ui.lis_wid_task.setDisabled(False)
 		self.refresh_task_list()
 
-		self.ui.btn_edit_task.setText('Изменить задачу')
-		self.ui.btn_del_task.setText('Удалить задачу')
-		self.ui.btn_complete_task.show()
+		self.ui.btn_save.hide()
+		self.ui.btn_cancel.hide()
 
-		self.ui.btn_edit_task.disconnect()
-		self.ui.btn_del_task.disconnect()
-		# self.ui.btn_edit_task.clicked.connect(lambda: self.create_task())
-		# self.ui.btn_del_task.clicked.connect(lambda: self.cancel_create_task())
+		self.ui.btn_del_task.show()
+		self.ui.btn_complete_task.show()
+		self.ui.btn_edit_task.show()
+		self.ui.btn_add_task.show()
+		self.ui.btn_refresh_task_list.show()
+
+		self.ui.led_name_task.setDisabled(True)
+		self.ui.ted_description_task.setDisabled(True)
+
+	def del_task(self) -> None:
+		category_name = self.ui.lis_wid_category.currentItem().text()
+		task_name = self.ui.lis_wid_task.currentItem().text()
+
+		if category_name and task_name:
+			if self.mes_box(f'Удалить задачу {task_name} в категории {category_name}', True):
+				sql_query.del_task(category_name, task_name)
+
+				self.refresh_task_list()
+
+	def edit_task_menu(self) -> None:
+		self.ui.ted_description_task.clear()
+		self.ui.led_name_task.clear()
+
+		self.view_task()
+
+		self.ui.led_name_task.setDisabled(False)
+		self.ui.ted_description_task.setDisabled(False)
+
+		self.ui.lis_wid_task.setDisabled(True)
+
+		self.ui.btn_save_edit.show()
+		self.ui.btn_cancel_edit.show()
+
+		self.ui.btn_del_task.hide()
+		self.ui.btn_complete_task.hide()
+		self.ui.btn_edit_task.hide()
+		self.ui.btn_add_task.hide()
+		self.ui.btn_refresh_task_list.hide()
+
+	def edit_task(self) -> None:
+		category_name = self.ui.lis_wid_category.currentItem().text()
+		task_name_new = self.ui.led_name_task.text()
+		task_name_old = self.ui.lis_wid_task.currentItem().text()
+		description = self.ui.ted_description_task.toPlainText()
+
+		if task_name_new and description:
+			sql_query.update_task(task_name_new, description, category_name, task_name_old)
+
+			self.cancel_edit_task()
+		else:
+			if not task_name_new:
+				self.ui.led_name_task.setText('Введите название')
+			if not description:
+				self.ui.ted_description_task.setText('Введите описание')
+
+	def cancel_edit_task(self) -> None:
+		self.ui.ted_description_task.clear()
+		self.ui.led_name_task.clear()
+
+		self.ui.lis_wid_task.setDisabled(False)
+		self.refresh_task_list()
+
+		self.ui.btn_save_edit.hide()
+		self.ui.btn_cancel_edit.hide()
+
+		self.ui.btn_del_task.show()
+		self.ui.btn_complete_task.show()
+		self.ui.btn_edit_task.show()
+		self.ui.btn_add_task.show()
+		self.ui.btn_refresh_task_list.show()
+
+		self.ui.led_name_task.setDisabled(True)
+		self.ui.ted_description_task.setDisabled(True)
 
 	def view_task(self) -> None:
 		category_name = self.ui.lis_wid_category.currentItem().text()
@@ -131,15 +219,22 @@ class LisTodo(QMainWindow):
 			self.ui.led_name_task.setText(task_data[0])
 			self.ui.ted_description_task.setText((task_data[1]))
 
-
-
 	@staticmethod
-	def mes_box(mes_text: str) -> None:
-		msg = QMessageBox()
-		msg.setWindowTitle('Предупреждение')
-		msg.setText(mes_text)
+	def mes_box(mes_text: str, accept_mode: bool = False) -> Union[bool, None]:
+		if accept_mode:
+			msg = QMessageBox()
+			msg.setWindowTitle('Подтвердите действие')
+			msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+			msg.setText(mes_text)
 
-		msg.exec()
+			return_value = msg.exec()
+			return return_value == QMessageBox.Ok
+		else:
+			msg = QMessageBox()
+			msg.setWindowTitle('Предупреждение')
+			msg.setText(mes_text)
+
+			msg.exec()
 
 	def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
 		sql_query.db_disconnect()
