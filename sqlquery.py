@@ -68,7 +68,7 @@ class SqlQuery:
 		with self.connection.cursor() as cursor:
 			cursor.execute(
 				f"""
-				SELECT task_name FROM task
+				SELECT task_name, complete FROM task
 				WHERE category_name = '{category_name}'
 				"""
 			)

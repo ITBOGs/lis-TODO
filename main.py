@@ -3,6 +3,7 @@ from typing import Union
 
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QListWidgetItem
+from PyQt5.QtGui import QColor
 
 from design_MainWindow import Ui_MainWindow
 from sqlquery import SqlQuery
@@ -62,6 +63,26 @@ class LisTodo(QMainWindow):
 
 		self.ui.lis_wid_category.setCurrentItem(first_item)
 
+		if self.ui.lis_wid_category.count() == 0:
+			self.mes_box('Нет категорий, необходимо создать')
+			self.task_func_disable()
+		else:
+			self.task_funk_active()
+
+	def task_func_disable(self) -> None:
+		self.ui.btn_add_task.setDisabled(True)
+		self.ui.btn_del_task.setDisabled(True)
+		self.ui.btn_edit_task.setDisabled(True)
+		self.ui.btn_refresh_task_list.setDisabled(True)
+		self.ui.btn_complete_task.setDisabled(True)
+
+	def task_funk_active(self) -> None:
+		self.ui.btn_add_task.setDisabled(False)
+		self.ui.btn_del_task.setDisabled(False)
+		self.ui.btn_edit_task.setDisabled(True)
+		self.ui.btn_refresh_task_list.setDisabled(False)
+		self.ui.btn_complete_task.setDisabled(False)
+
 	def refresh_task_list(self) -> None:
 		self.ui.lis_wid_task.clear()
 		self.ui.led_name_task.clear()
@@ -75,14 +96,17 @@ class LisTodo(QMainWindow):
 
 			for lis_name in lis_task:
 				if not first_item:
-					first_item = QListWidgetItem(*lis_name)
+					first_item = QListWidgetItem(lis_name[0])
+					if lis_name[1]:
+						first_item.setBackground(QColor('#98FB98'))
 					self.ui.lis_wid_task.addItem(first_item)
 				else:
-					self.ui.lis_wid_task.addItem(*lis_name)
+					item = QListWidgetItem(lis_name[0])
+					if lis_name[1]:
+						item.setBackground(QColor('#98FB98'))
+					self.ui.lis_wid_task.addItem(item)
 
 			self.ui.lis_wid_task.setCurrentItem(first_item)
-		else:
-			self.mes_box('Не выбрана категория')
 
 	def create_category(self) -> None:
 		dlg_create_table = DlgCreateCategory()
@@ -110,20 +134,21 @@ class LisTodo(QMainWindow):
 		self.ui.btn_refresh_task_list.hide()
 
 	def create_task(self) -> None:
-		category_name = self.ui.lis_wid_category.currentItem().text()
-		task_name = self.ui.led_name_task.text()
-		description = self.ui.ted_description_task.toPlainText()
+		if self.ui.lis_wid_category.count() != 0:
+			category_name = self.ui.lis_wid_category.currentItem().text()
+			task_name = self.ui.led_name_task.text()
+			description = self.ui.ted_description_task.toPlainText()
 
-		if category_name and task_name and description:
-			sql_query.insert_task(task_name, description, category_name)
-			self.cancel_create_task()
+			if category_name and task_name and description:
+				sql_query.insert_task(task_name, description, category_name)
+				self.cancel_create_task()
+			else:
+				if not task_name:
+					self.ui.led_name_task.setText('Введите название')
+				if not description:
+					self.ui.ted_description_task.setText('Введите описание')
 		else:
-			if not category_name:
-				self.mes_box('Не выбрана категория')
-			if not task_name:
-				self.ui.led_name_task.setText('Введите название')
-			if not description:
-				self.ui.ted_description_task.setText('Введите описание')
+			self.mes_box('Не выбрана категория')
 
 	def cancel_create_task(self) -> None:
 		self.ui.ted_description_task.clear()
@@ -145,14 +170,15 @@ class LisTodo(QMainWindow):
 		self.ui.ted_description_task.setDisabled(True)
 
 	def del_task(self) -> None:
-		category_name = self.ui.lis_wid_category.currentItem().text()
-		task_name = self.ui.lis_wid_task.currentItem().text()
+		if self.ui.lis_wid_category.count() != 0:
+			category_name = self.ui.lis_wid_category.currentItem().text()
+			task_name = self.ui.lis_wid_task.currentItem().text()
 
-		if category_name and task_name:
-			if self.mes_box(f'Удалить задачу {task_name} в категории {category_name}', True):
-				sql_query.del_task(category_name, task_name)
+			if category_name and task_name:
+				if self.mes_box(f'Удалить задачу {task_name} в категории {category_name}', True):
+					sql_query.del_task(category_name, task_name)
 
-				self.refresh_task_list()
+					self.refresh_task_list()
 
 	def edit_task_menu(self) -> None:
 		self.ui.ted_description_task.clear()
@@ -175,20 +201,21 @@ class LisTodo(QMainWindow):
 		self.ui.btn_refresh_task_list.hide()
 
 	def edit_task(self) -> None:
-		category_name = self.ui.lis_wid_category.currentItem().text()
-		task_name_new = self.ui.led_name_task.text()
-		task_name_old = self.ui.lis_wid_task.currentItem().text()
-		description = self.ui.ted_description_task.toPlainText()
+		if self.ui.lis_wid_category.count() != 0:
+			category_name = self.ui.lis_wid_category.currentItem().text()
+			task_name_new = self.ui.led_name_task.text()
+			task_name_old = self.ui.lis_wid_task.currentItem().text()
+			description = self.ui.ted_description_task.toPlainText()
 
-		if task_name_new and description:
-			sql_query.update_task(task_name_new, description, category_name, task_name_old)
+			if task_name_new and description:
+				sql_query.update_task(task_name_new, description, category_name, task_name_old)
 
-			self.cancel_edit_task()
-		else:
-			if not task_name_new:
-				self.ui.led_name_task.setText('Введите название')
-			if not description:
-				self.ui.ted_description_task.setText('Введите описание')
+				self.cancel_edit_task()
+			else:
+				if not task_name_new:
+					self.ui.led_name_task.setText('Введите название')
+				if not description:
+					self.ui.ted_description_task.setText('Введите описание')
 
 	def cancel_edit_task(self) -> None:
 		self.ui.ted_description_task.clear()
@@ -210,14 +237,15 @@ class LisTodo(QMainWindow):
 		self.ui.ted_description_task.setDisabled(True)
 
 	def view_task(self) -> None:
-		category_name = self.ui.lis_wid_category.currentItem().text()
-		task_name = self.ui.lis_wid_task.currentItem().text()
+		if self.ui.lis_wid_category.count() != 0:
+			category_name = self.ui.lis_wid_category.currentItem().text()
+			task_name = self.ui.lis_wid_task.currentItem().text()
 
-		if category_name and task_name:
-			task_data = list(sql_query.get_task_details(category_name, task_name)[0])
+			if category_name and task_name:
+				task_data = list(sql_query.get_task_details(category_name, task_name)[0])
 
-			self.ui.led_name_task.setText(task_data[0])
-			self.ui.ted_description_task.setText((task_data[1]))
+				self.ui.led_name_task.setText(task_data[0])
+				self.ui.ted_description_task.setText((task_data[1]))
 
 	@staticmethod
 	def mes_box(mes_text: str, accept_mode: bool = False) -> Union[bool, None]:
