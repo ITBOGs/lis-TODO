@@ -306,7 +306,7 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.btn_cancel.setText(_translate("MainWindow", "Отмена"))
         self.btn_save.setText(_translate("MainWindow", "Сохранить"))
-        self.btn_complete_task.setText(_translate("MainWindow", "Выполнено"))
+        self.btn_complete_task.setText(_translate("MainWindow", "Готово/Или нет"))
         self.btn_del_task.setText(_translate("MainWindow", "Удалить задачу"))
         self.btn_edit_task.setText(_translate("MainWindow", "Изменить задачу"))
         self.btn_save_edit.setText(_translate("MainWindow", "Сохранить"))

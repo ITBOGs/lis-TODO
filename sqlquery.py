@@ -75,6 +75,31 @@ class SqlQuery:
 
 			return cursor.fetchall()
 
+	def get_category_name_amount(self, category_name: str) -> int:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				SELECT COUNT(category_name) FROM category
+				WHERE
+					category_name = '{category_name}'
+				"""
+			)
+
+			return cursor.fetchone()[0]
+
+	def get_task_name_amount(self, category_name: str, task_name: str) -> int:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				SELECT COUNT(task_name) FROM task
+				WHERE
+					category_name = '{category_name}'
+					AND task_name = '{task_name}'
+				"""
+			)
+
+			return cursor.fetchone()[0]
+
 	def get_task_details(self, category_name: str, task_name: str) -> tuple:
 		with self.connection.cursor() as cursor:
 			cursor.execute(
@@ -127,5 +152,30 @@ class SqlQuery:
 				WHERE 
 					category_name = '{category_name}'
 					AND task_name = '{task_name_old}'
+				"""
+			)
+
+	def get_done_mode(self, category_name: str, task_name: str) -> tuple:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				SELECT complete FROM task
+				WHERE 
+					category_name = '{category_name}'
+					AND task_name = '{task_name}'
+				"""
+			)
+
+			return cursor.fetchone()
+
+	def set_done_mode(self, category_name: str, task_name: str, mode: bool) -> None:
+		with self.connection.cursor() as cursor:
+			cursor.execute(
+				f"""
+				UPDATE task
+				SET complete = {mode}
+				WHERE
+					category_name = '{category_name}'
+					AND task_name = '{task_name}'
 				"""
 			)

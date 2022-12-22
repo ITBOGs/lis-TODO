@@ -32,6 +32,7 @@ class LisTodo(QMainWindow):
 			self.ui.btn_edit_task.clicked.connect(lambda: self.edit_task_menu())
 			self.ui.btn_cancel_edit.clicked.connect(lambda: self.cancel_edit_task())
 			self.ui.btn_save_edit.clicked.connect(lambda: self.edit_task())
+			self.ui.btn_complete_task.clicked.connect(lambda: self.change_done_mode())
 
 			self.ui.lis_wid_category.itemDoubleClicked.connect(lambda: self.refresh_task_list())
 			self.ui.lis_wid_task.itemDoubleClicked.connect(lambda: self.view_task())
@@ -79,7 +80,7 @@ class LisTodo(QMainWindow):
 	def task_funk_active(self) -> None:
 		self.ui.btn_add_task.setDisabled(False)
 		self.ui.btn_del_task.setDisabled(False)
-		self.ui.btn_edit_task.setDisabled(True)
+		self.ui.btn_edit_task.setDisabled(False)
 		self.ui.btn_refresh_task_list.setDisabled(False)
 		self.ui.btn_complete_task.setDisabled(False)
 
@@ -138,8 +139,9 @@ class LisTodo(QMainWindow):
 			category_name = self.ui.lis_wid_category.currentItem().text()
 			task_name = self.ui.led_name_task.text()
 			description = self.ui.ted_description_task.toPlainText()
+			task_name_amount = sql_query.get_task_name_amount(category_name, task_name)
 
-			if category_name and task_name and description:
+			if category_name and task_name and description and task_name_amount == 0:
 				sql_query.insert_task(task_name, description, category_name)
 				self.cancel_create_task()
 			else:
@@ -147,6 +149,8 @@ class LisTodo(QMainWindow):
 					self.ui.led_name_task.setText('Введите название')
 				if not description:
 					self.ui.ted_description_task.setText('Введите описание')
+				if task_name_amount != 0:
+					self.ui.led_name_task.setText('Введите другое название')
 		else:
 			self.mes_box('Не выбрана категория')
 
@@ -170,7 +174,7 @@ class LisTodo(QMainWindow):
 		self.ui.ted_description_task.setDisabled(True)
 
 	def del_task(self) -> None:
-		if self.ui.lis_wid_category.count() != 0:
+		if self.ui.lis_wid_category.count() != 0 and self.ui.lis_wid_task.count() != 0:
 			category_name = self.ui.lis_wid_category.currentItem().text()
 			task_name = self.ui.lis_wid_task.currentItem().text()
 
@@ -201,7 +205,7 @@ class LisTodo(QMainWindow):
 		self.ui.btn_refresh_task_list.hide()
 
 	def edit_task(self) -> None:
-		if self.ui.lis_wid_category.count() != 0:
+		if self.ui.lis_wid_category.count() != 0 and self.ui.lis_wid_task.count() != 0:
 			category_name = self.ui.lis_wid_category.currentItem().text()
 			task_name_new = self.ui.led_name_task.text()
 			task_name_old = self.ui.lis_wid_task.currentItem().text()
@@ -236,8 +240,18 @@ class LisTodo(QMainWindow):
 		self.ui.led_name_task.setDisabled(True)
 		self.ui.ted_description_task.setDisabled(True)
 
+	def change_done_mode(self) -> None:
+		if self.ui.lis_wid_category.count() != 0 and self.ui.lis_wid_task.count() != 0:
+			category_name = self.ui.lis_wid_category.currentItem().text()
+			task_name = self.ui.lis_wid_task.currentItem().text()
+			mode = sql_query.get_done_mode(category_name, task_name)[0]
+
+			sql_query.set_done_mode(category_name, task_name, not mode)
+
+			self.refresh_task_list()
+
 	def view_task(self) -> None:
-		if self.ui.lis_wid_category.count() != 0:
+		if self.ui.lis_wid_category.count() != 0 and self.ui.lis_wid_task.count() != 0:
 			category_name = self.ui.lis_wid_category.currentItem().text()
 			task_name = self.ui.lis_wid_task.currentItem().text()
 

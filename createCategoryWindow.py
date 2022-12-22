@@ -19,11 +19,17 @@ class DlgCreateCategory(QDialog):
 		self.ui.btn_cancel.clicked.connect(lambda: self.cancel())
 
 	def create_category(self):
-		if self.ui.led_category_name.text():
-			self.sql_query.insert_category(self.ui.led_category_name.text())
+		category_name = self.ui.led_category_name.text()
+		category_name_amount = self.sql_query.get_category_name_amount(category_name)
+
+		if category_name and category_name_amount == 0:
+			self.sql_query.insert_category(category_name)
 			self.close()
 		else:
-			self.ui.led_category_name.setText('Введите название')
+			if not category_name:
+				self.ui.led_category_name.setText('Введите название')
+			if category_name_amount != 0:
+				self.ui.led_category_name.setText('Введите другое название')
 
 	def cancel(self) -> None:
 		self.close()
